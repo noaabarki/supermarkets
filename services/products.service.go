@@ -1,6 +1,9 @@
 package services
 
-import "supermarkets/models"
+import (
+	"supermarkets/dtos/shufersal"
+	"supermarkets/models"
+)
 
 type IProductService interface {
 	GetProducts() []models.Product
@@ -23,11 +26,13 @@ func (productsService ProductService) GetProducts(productName string) []models.P
 func (productsService ProductService) getShufersalProducts(productName string) []models.Product {
 	var results []models.Product
 
-	shufersalProducts := productsService.shufersalProxy.GetProducts(productName)
+	var shufersalProducts []shufersal.ShufersalProduct
+	shufersalProducts = productsService.shufersalProxy.GetProducts(productName)
 
 	prices := make([]models.ProductPrice, len(shufersalProducts))
 	for _, shufersalProduct := range shufersalProducts {
-		prices = append(prices, models.MakeProductPrice("shufersal", shufersalProduct.price.value))
+		price := shufersalProduct.GetPrice()
+		prices = append(prices, models.MakeProductPrice("shufersal", price))
 	}
 
 	results = append(results, models.MakeProduct(productName, prices))

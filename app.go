@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	"supermarkets/models"
+	"net/http"
+	"supermarkets/controllers"
 )
 
 func main() {
 	fmt.Println("supermarkets")
-	fmt.Println(models.GetName())
+	http.HandleFunc("/products", controllers.GetProducts)
+	http.ListenAndServe(":8080", nil)
 }

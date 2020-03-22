@@ -1,16 +1,23 @@
 package controllers
 
 import (
-	"supermarkets/models"
+	"log"
+	"net/http"
 	"supermarkets/services"
 )
 
-func getProductPrices(productName string) []models.Product {
+func GetProducts(w http.ResponseWriter, request *http.Request) {
+	defer request.Body.Close()
+
 	productsService := services.MakeProductService()
+	keys, ok := request.URL.Query()["name"]
 
-	// productPrices := []models.ProductPrice{models.MakeProductPrice("shufersal", 9.90)}
-	// products := []models.Product{models.MakeProduct(productName, productPrices)}
+	if !ok || len(keys[0]) < 1 {
+		log.Println("Url Param 'key' is missing")
+		return
+	}
 
+	productName := keys[0]
 	products := productsService.GetProducts(productName)
-	return products
+	log.Println(products)
 }
