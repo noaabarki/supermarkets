@@ -1,5 +1,3 @@
 # supermarkets
 
-update again readMe from temp-sub-first
-
-Hello World!
+My first experience writing code in Golang!
